@@ -28,44 +28,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> scoreKeeper = [];
-  var questions = quizBrain.questions;
-
-  int counter = 0;
-  void getNext() {
-    if (counter >= questions.length - 1) {
-      counter = 0;
-    } else {
-      counter += 1;
-    }
-  }
-
-  void answerChecker(bool userGuess) {
-    if (userGuess == questions[counter].questionAnswer) {
-      setState(() {
-        scoreKeeper.add(
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        );
-        getNext();
-      });
-    } else {
-      setState(() {
-        scoreKeeper.add(
-          Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
-        );
-        getNext();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    var questions = quizBrain.getQuestions();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[counter].questionText,
+                questions[quizBrain.counter].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -100,7 +65,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                answerChecker(true);
+                setState(() {
+                  quizBrain.answerChecker(true);
+                });
                 //The user picked true.
               },
             ),
@@ -119,14 +86,16 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                answerChecker(false);
+                setState(() {
+                  quizBrain.answerChecker(false);
+                });
                 //The user picked false.
               },
             ),
           ),
         ),
         Row(
-          children: scoreKeeper,
+          children: quizBrain.scoreKeeper,
         ),
       ],
     );
