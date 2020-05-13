@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/QuizBrain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = new QuizBrain();
 
@@ -66,7 +67,18 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  quizBrain.answerChecker(true);
+                  if (quizBrain.isFinished) {
+                    int correct = quizBrain.correctCounter;
+                    int total = quizBrain.getQuestions().length;
+                    Alert(
+                            context: context,
+                            title: "GAME OVER",
+                            desc: "You got $correct out of $total right!")
+                        .show();
+                    quizBrain.reset();
+                  } else {
+                    quizBrain.answerChecker(true);
+                  }
                 });
                 //The user picked true.
               },
@@ -87,7 +99,18 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  quizBrain.answerChecker(false);
+                  if (quizBrain.isFinished) {
+                    int correct = quizBrain.correctCounter;
+                    int total = quizBrain.getQuestions().length;
+                    Alert(
+                            context: context,
+                            title: "GAME OVER",
+                            desc: "You got $correct out of $total right!")
+                        .show();
+                    quizBrain.reset();
+                  } else {
+                    quizBrain.answerChecker(false);
+                  }
                 });
                 //The user picked false.
               },

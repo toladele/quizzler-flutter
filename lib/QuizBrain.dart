@@ -4,6 +4,8 @@ import 'package:quizzler/Question.dart';
 class QuizBrain {
   List<Widget> scoreKeeper = [];
   int counter = 0;
+  bool isFinished = false;
+  int correctCounter = 0;
 
   List<Question> _questions = [
     Question('Some cats are actually allergic to humans', true),
@@ -38,8 +40,8 @@ class QuizBrain {
   }
 
   void getNext() {
-    if (counter >= _questions.length - 1) {
-      counter = 0;
+    if (counter == _questions.length - 1) {
+      isFinished = true;
     } else {
       counter += 1;
     }
@@ -53,6 +55,7 @@ class QuizBrain {
           color: Colors.green,
         ),
       );
+      correctCounter++;
       getNext();
     } else {
       scoreKeeper.add(
@@ -63,5 +66,12 @@ class QuizBrain {
       );
       getNext();
     }
+  }
+
+  void reset() {
+    counter = 0;
+    isFinished = false;
+    correctCounter = 0;
+    scoreKeeper = [];
   }
 }
